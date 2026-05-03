@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification d'accès</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="age-gate">
+        <div class="gate-content">
+            <div class="warning-icon">!</div>
+            <h1>CONTENU RESTREINT</h1>
+            <p>Ce site utilise des cookies de session pour vérifier votre âge.</p>
+            <div class="gate-buttons">
+                <button class="btn-gate btn-yes" onclick="revealTrap()">ENTRER</button>
+                <button class="btn-gate btn-no" onclick="location.href='https://google.com'">QUITTER</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="reveal-screen" style="display: none;">
+        <div class="reveal-box">
+            <h2 style="color:#ff4444;">ALERTE SÉCURITÉ</h2>
+            <div class="terminal">
+                <p>> Connexion interceptée...</p>
+                <p>> IP : <span id="u-ip">Analyse...</span></p>
+                <p>> Lieu : <span id="u-city">Recherche...</span></p>
+                <p style="color:#ff4444; font-weight:bold;">> RISQUE : ÉLEVÉ</p>
+            </div>
+            <p style="font-size:0.8rem; color:#888; margin-top:10px;">
+                Ceci est une simulation de sensibilisation. Vos données n'ont pas été stockées illégalement.
+            </p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
