@@ -1,30 +1,31 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import datetime
+import os
 
 app = Flask(__name__)
-CORS(app) # Indispensable pour que GitHub puisse envoyer les données
+CORS(app) # Indispensable pour autoriser GitHub Pages à envoyer les données
 
 @app.route('/')
-def home():
-    return "Serveur de Monitoring Actif", 200
+def status():
+    return "Système de Monitoring en ligne", 200
 
 @app.route('/log_click', methods=['POST'])
 def log_click():
-    # Récupération de l'IP (Render transmet l'IP réelle via ce header)
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    # Récupération de l'IP réelle via le proxy de Render
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0]
     ua = request.headers.get('User-Agent')
     date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
-    log_entry = f"[{date}] IP: {ip} | UA: {ua}\n"
+    # Affichage dans la console de Render (Logs)
+    print(f"\n[+] NOUVELLE CAPTURE")
+    print(f"Date: {date} | IP: {ip}")
+    print(f"Appareil: {ua}")
+    print("-" * 20)
     
-    # Sur un serveur cloud, on écrit dans un fichier persistant 
-    # ou on l'affiche simplement dans les logs du tableau de bord
-    with open("visites.log", "a") as f:
-        f.write(log_entry)
-        
-    print(f"Nouvelle capture : {ip}")
-    return jsonify({"status": "success"}), 200
+    return jsonify({"status": "ok"}), 200
 
 if __name__ == "__main__":
-    app.run()
+    # Utilisation du port dynamique imposé par l'hébergeur
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
