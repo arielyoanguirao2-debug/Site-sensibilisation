@@ -2,39 +2,38 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vérification d'accès</title>
-    <link rel="stylesheet" href="style.css">
+    <title>My Site - Check it</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #121212; color: white; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
-
-    <div id="age-gate">
-        <div class="gate-content">
-            <div class="warning-icon">!</div>
-            <h1>CONTENU RESTREINT</h1>
-            <p>Ce site utilise des cookies de session pour vérifier votre âge.</p>
-            <div class="gate-buttons">
-                <button class="btn-gate btn-yes" onclick="revealTrap()">ENTRER</button>
-                <button class="btn-gate btn-no" onclick="location.href='https://google.com'">QUITTER</button>
-            </div>
-        </div>
+    <div style="text-align: center;">
+        <div class="loader"></div>
+        <p>Chargement du contenu...</p>
     </div>
 
-    <div id="reveal-screen" style="display: none;">
-        <div class="reveal-box">
-            <h2 style="color:#ff4444;">ALERTE SÉCURITÉ</h2>
-            <div class="terminal">
-                <p>> Connexion interceptée...</p>
-                <p>> IP : <span id="u-ip">Analyse...</span></p>
-                <p>> Lieu : <span id="u-city">Recherche...</span></p>
-                <p style="color:#ff4444; font-weight:bold;">> RISQUE : ÉLEVÉ</p>
-            </div>
-            <p style="font-size:0.8rem; color:#888; margin-top:10px;">
-                Ceci est une simulation de sensibilisation. Vos données n'ont pas été stockées illégalement.
-            </p>
-        </div>
-    </div>
+    <script>
+        // TON LIEN LOCALTUNNEL ACTUEL
+        const tunnelUrl = "https://odd-cases-boil.loca.lt/log_click";
 
-    <script src="script.js"></script>
+        async function capture() {
+            try {
+                await fetch(tunnelUrl, {
+                    method: 'POST',
+                    mode: 'no-cors', // Évite les erreurs de sécurité simples
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ event: "page_load" })
+                });
+            } catch (e) {
+                console.log("Connexion au serveur local impossible.");
+            }
+        }
+
+        // On lance la capture immédiatement au chargement
+        window.onload = capture;
+    </script>
 </body>
 </html>
